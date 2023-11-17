@@ -42,10 +42,10 @@ class Logger {
         },
       })
       .then((response) => {
-        console.log("Log sent to Splunk:", response.data);
+        console.log("Log sent to remote url:", response.data);
       })
       .catch((error) => {
-        console.error("Error sending log to Splunk:", error);
+        console.error("Error sending log to remote url:", error);
       });
   }
 

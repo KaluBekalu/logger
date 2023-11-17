@@ -1,6 +1,6 @@
 {
   "name": "@kalbekalu/logger",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "An all in one logging package!",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

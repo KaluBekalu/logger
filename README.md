@@ -1,12 +1,12 @@
 # Logger
 
-Logger is a simple logging library for JavaScript applications. It provides an easy way to log messages to the console, send logs to Splunk, or write them to a log file.
+Logger is a simple logging library for JavaScript applications. It provides an easy way to log messages to the console, send logs to Remote, or write them to a log file.
 
 ## Features
 
 - Log messages with different severity levels: TRACE, INFO, DEBUG, WARN, ERROR, FATAL.
 - Option to log messages to the console.
-- Option to send logs to Splunk for centralized monitoring.
+- Option to send logs to Remote for centralized monitoring.
 - Option to write logs to a log file.
 
 ## Installation
@@ -25,9 +25,9 @@ import Logger from "@kalbekalu/logger";
 
 2. Create an instance of the Logger class:
 ```js
-   const logger = new Logger(splunkUrl, splunkToken, appInfo);
+   const logger = new Logger(remoteUrl, token, appInfo);
 ```
-'url': The URL of your host server for logging. eg: splunk
+'url': The URL of your host server for logging. eg: Splunk
 'token': The token to authenticate with server.
 'appInfo': Information about your application, such as name, version, etc. 
 eg: 
@@ -47,7 +47,7 @@ eg:
    3.2. To log to remote: 
       
       ```js
-      logger.remote(Logger.levels.ERROR, "An error occurred in the application");
+      logger.logToUrl(Logger.levels.ERROR, "An error occurred in the application");
       ```
       
    3.3. To log to file: 
@@ -76,7 +76,7 @@ const logger = new Logger("https://your-server-url", "your-server-auth-token", {
 });
 
 logger.standard(Logger.levels.INFO, "Application started");
-logger.splunk(Logger.levels.ERROR, "Critical error occurred");
+logger.logToUrl(Logger.levels.ERROR, "Critical error occurred");
 logger.file(Logger.levels.DEBUG, "Debugging information", "./app.log");
 
 ```
