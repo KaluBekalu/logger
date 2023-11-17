@@ -1,6 +1,10 @@
 {
   "name": "@kalbekalu/logger",
-  "version": "2.0.5",
+  "version": "2.0.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KaluBekalu/logger.git"
+  },
   "description": "An all in one logging package!",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
