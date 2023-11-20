@@ -1,10 +1,8 @@
-import axios from "axios";
+import axios, { Axios, AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import * as fs from "fs";
 
 class Logger {
-  private url: string;
-  private token: string;
-  private appInfo: any;
+  private appInfo: Record<string, any>;
 
   public levels = {
     TRACE: "TRACE",
@@ -15,9 +13,7 @@ class Logger {
     FATAL: "FATAL",
   };
 
-  constructor(url: string, token: string, appInfo: any) {
-    this.url = url;
-    this.token = token;
+  constructor(appInfo: any) {
     this.appInfo = appInfo;
   }
 
@@ -25,37 +21,37 @@ class Logger {
     return new Date().toISOString();
   }
 
-  public logToUrl(level: string, message: string) {
+  public logToUrl(
+    level: string,
+    logData: Record<string, any>,
+    // API Configs 👇
+    method: Method = "POST",
+    config: AxiosRequestConfig
+  ) {
     const timestamp = this.getCurrentTimestamp();
-    const logMessage = JSON.stringify({
+    const logMessage = {
       ...this.appInfo,
       date: timestamp,
       level,
-      message,
-    });
+      ...logData,
+    };
 
-    axios
-      .post(this.url, logMessage, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${this.token}`,
-        },
-      })
-      .then((response) => {
-        console.log("Log sent to remote url:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error sending log to remote url:", error);
-      });
+    return axios({
+      method,
+      data: {
+        ...logMessage,
+      },
+      ...config,
+    });
   }
 
-  public standard(level: string, message: string) {
+  public standard(level: string, logData: Record<string, any>) {
     const timestamp = this.getCurrentTimestamp();
     const logMessage = JSON.stringify({
       ...this.appInfo,
       date: timestamp,
       level,
-      message,
+      ...logData,
     });
 
     console.log(logMessage);
@@ -63,7 +59,7 @@ class Logger {
 
   public file(
     level: string,
-    message: string,
+    logData: Record<string, any>,
     logFilePath: string = "./app.log"
   ) {
     const timestamp = this.getCurrentTimestamp();
@@ -71,7 +67,7 @@ class Logger {
       ...this.appInfo,
       date: timestamp,
       level,
-      message,
+      ...logData,
     });
 
     fs.appendFile(logFilePath, logMessage + "\n", (err) => {

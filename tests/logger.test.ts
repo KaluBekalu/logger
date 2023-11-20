@@ -6,9 +6,7 @@ jest.mock("axios");
 
 describe("Logger", () => {
   const url = "https://example.com/log";
-  const token = "your-token";
-  const appInfo = { appName: "TestApp" };
-  const logger = new Logger(url, token, appInfo);
+  const logger = new Logger(url);
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -60,7 +58,7 @@ describe("Logger", () => {
   describe("standard", () => {
     it("should log to console", () => {
       const level = logger.levels.DEBUG;
-      const message = "Console message";
+      const logData = { message: "Console message", code: "CODE 1234" };
       const expectedTimestamp = "2023-11-16T12:34:56.789Z";
 
       jest
@@ -69,7 +67,7 @@ describe("Logger", () => {
 
       const spyConsoleLog = jest.spyOn(console, "log");
 
-      logger.standard(level, message);
+      logger.standard(level, logData);
 
       expect(spyConsoleLog).toHaveBeenCalledWith(expect.any(String));
       expect(spyConsoleLog).toHaveBeenCalledWith(
@@ -79,7 +77,7 @@ describe("Logger", () => {
         expect.stringContaining(level)
       );
       expect(spyConsoleLog).toHaveBeenCalledWith(
-        expect.stringContaining(message)
+        expect.objectContaining(logData)
       );
     });
   });

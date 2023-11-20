@@ -1,88 +1,81 @@
-# Logger
+# Logger README
 
-Logger is a simple logging library for JavaScript applications. It provides an easy way to log messages to the console, send logs to Remote, or write them to a log file.
-
-## Features
-
-- Log messages with different severity levels: TRACE, INFO, DEBUG, WARN, ERROR, FATAL.
-- Option to log messages to the console.
-- Option to send logs to Remote for centralized monitoring.
-- Option to write logs to a log file.
+A simple logging utility for Node.js applications, designed to log messages to various destinations, including a remote API endpoint, console, and a local log file.
 
 ## Installation
-
-You can install the library using npm:
 
 ```bash
 npm install @kalbekalu/logger
 ```
 
-# Usage
+## Usage
 
-1. Import the logger class:
+### Importing the Logger
 
-```js
-import Logger from "@kalbekalu/logger";
+```javascript
+import Logger from "./Logger";
 ```
 
-2. Create an instance of the Logger class:
+### Creating an instance of Logger
 
-```js
-const logger = new Logger("https://remoteUrl.com/log", "ABC123xyz", {
-  name: "APP NAME",
-  version: "1.0.1",
-});
+```javascript
+const logger = new Logger(url, token, appInfo);
 ```
 
-'url': The URL of your host server for logging. eg: Splunk
-'token': The token to authenticate with server.
-'appInfo': Information about your application, such as name, version, etc.
-eg:
+- `url` (string): The URL of the remote API endpoint where logs will be sent.
+- `token` (string): The authentication token required for the remote API endpoint.
+- `appInfo` (any): Additional information about the application (e.g., name, version) to include in each log entry.
 
-```js
-{ "name" : "App Name", "version" : "V1.2"}
+### Logging to a Remote API Endpoint
+
+```javascript
+logger.logToUrl(level, logData, method, config);
 ```
 
-3. Log messages using different methods:
+- `level` (string): Log level (TRACE, INFO, DEBUG, WARN, ERROR, FATAL).
+- `logData` (Record<string, any>): Additional data to be logged - can be any valid object record.
+- `method` (string, optional, default: "POST"): HTTP method for the API request.
+- `config` (AxiosRequestConfig, optional): Additional Axios configuration options for the API request.
 
-   3.1. To log to the console:
+### Logging to Console
 
-   ```js
-   logger.standard(Logger.levels.INFO, "This is an informational message");
-   ```
-
-   3.2. To log to remote:
-
-   ```js
-   logger.logToUrl(Logger.levels.ERROR, "An error occurred in the application");
-   ```
-
-   3.3. To log to file:
-
-   ```js
-   logger.file(Logger.levels.INFO, "This is an informational message");
-   ```
-
-4. Use the different severity levels available:
-
-```js
-Logger.levels.TRACE;
-Logger.levels.INFO;
-Logger.levels.DEBUG;
-Logger.levels.WARN;
-Logger.levels.ERROR;
-Logger.levels.FATAL;
+```javascript
+logger.standard(level, logData);
 ```
 
-## Exmple
+- `level` (string): Log level (TRACE, INFO, DEBUG, WARN, ERROR, FATAL) - Required.
+- `logData` (Record<string, any>): Additional data to be logged - can be any valid object record - Required.
 
-```js
-const logger = new Logger("https://your-server-url", "your-server-auth-token", {
+### Logging to a Local File
+
+```javascript
+logger.file(level, logData, logFilePath);
+```
+
+- `level` (string): Log level (TRACE, INFO, DEBUG, WARN, ERROR, FATAL) - Required.
+- `logData` (Record<string, any>): Additional data to be logged - can be any valid object record - Required.
+- `logFilePath` (string, optional, default: "./app.log"): Path to the local log file - Required.
+
+## Example
+
+```javascript
+const logger = new Logger({
   appName: "MyApp",
   appVersion: "1.0.0",
 });
 
-logger.standard(Logger.levels.INFO, "Application started");
-logger.logToUrl(Logger.levels.ERROR, "Critical error occurred");
-logger.file(Logger.levels.DEBUG, "Debugging information", "./app.log");
+logger
+  .logToUrl("INFO", { message: "Application started" })
+  .then((response) => console.log("Log sent successfully"))
+  .catch((error) => console.error("Error sending log:", error));
+
+logger.standard("DEBUG", { message: "Debugging information" });
+
+logger.file("ERROR", { message: "An error occurred" }, "./errors.log");
 ```
+
+In this example, logs are sent to a remote API endpoint, printed to the console, and appended to a local log file.
+
+## License
+
+This code is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
