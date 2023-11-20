@@ -19,7 +19,7 @@ import Logger from "./Logger";
 ### Creating an instance of Logger
 
 ```javascript
-const logger = new Logger(url, token, appInfo);
+const logger = new Logger(appInfo);
 ```
 
 - `url` (string): The URL of the remote API endpoint where logs will be sent.
