@@ -25,7 +25,6 @@ class Logger {
     level: string,
     logData: Record<string, any>,
     // API Configs 👇
-    method: Method = "POST",
     config: AxiosRequestConfig
   ) {
     const timestamp = this.getCurrentTimestamp();
@@ -37,7 +36,6 @@ class Logger {
     };
 
     return axios({
-      method,
       data: {
         ...logMessage,
       },

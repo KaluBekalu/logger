@@ -22,19 +22,16 @@ import Logger from "./Logger";
 const logger = new Logger(appInfo);
 ```
 
-- `url` (string): The URL of the remote API endpoint where logs will be sent.
-- `token` (string): The authentication token required for the remote API endpoint.
 - `appInfo` (any): Additional information about the application (e.g., name, version) to include in each log entry.
 
 ### Logging to a Remote API Endpoint
 
 ```javascript
-logger.logToUrl(level, logData, method, config);
+logger.logToUrl(level, logData, config);
 ```
 
 - `level` (string): Log level (TRACE, INFO, DEBUG, WARN, ERROR, FATAL).
-- `logData` (Record<string, any>): Additional data to be logged - can be any valid object record.
-- `method` (string, optional, default: "POST"): HTTP method for the API request.
+- `logData` (Record<string, any>): Additional data to be logged - can be any valid record object - Required.
 - `config` (AxiosRequestConfig, optional): Additional Axios configuration options for the API request.
 
 ### Logging to Console
@@ -44,7 +41,7 @@ logger.standard(level, logData);
 ```
 
 - `level` (string): Log level (TRACE, INFO, DEBUG, WARN, ERROR, FATAL) - Required.
-- `logData` (Record<string, any>): Additional data to be logged - can be any valid object record - Required.
+- `logData` (Record<string, any>): Additional data to be logged - can be any valid record object - Required.
 
 ### Logging to a Local File
 
@@ -53,7 +50,7 @@ logger.file(level, logData, logFilePath);
 ```
 
 - `level` (string): Log level (TRACE, INFO, DEBUG, WARN, ERROR, FATAL) - Required.
-- `logData` (Record<string, any>): Additional data to be logged - can be any valid object record - Required.
+- `logData` (Record<string, any>): Additional data to be logged - can be any valid record object - Required.
 - `logFilePath` (string, optional, default: "./app.log"): Path to the local log file - Required.
 
 ## Example
